@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Chat;
+use Illuminate\Support\Facades\Auth;
+use App\Events\ChatEvent;
 
 class ChatController extends Controller
 {
@@ -13,7 +16,8 @@ class ChatController extends Controller
      */
     public function index()
     {
-        //
+        $chats=Chat::all();
+        return view('chats.index', compact('chats'));
     }
 
     /**
@@ -21,9 +25,16 @@ class ChatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $data = $request->all();
+        $data["author"] = Auth::user()->name;
+        $chats = Chat::create($data);
+        event(
+            $e = new ChatEvent($chats)
+        );
+
+        return redirect()->back();
     }
 
     /**
