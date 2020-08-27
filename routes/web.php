@@ -26,6 +26,9 @@ Route::group([
     'prefix' => 'chat',
     'middleware' => 'auth'
 ], function () {
-    Route::get('/', 'ChatController@index');
-    Route::post('/create', 'ChatController@create')->name('create_chat');
+    Route::get('/', 'ChatController@index')->middleware('auth')->name('chat');
+    // Route::post('/create', 'ChatController@create')->name('create_chat');
+    Route::get('/test', function(){
+        return view('chats.test');
+    });
 });

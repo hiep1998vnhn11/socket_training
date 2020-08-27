@@ -17,7 +17,8 @@ class ChatController extends Controller
     public function index()
     {
         $chats=Chat::all();
-        return view('chats.index', compact('chats'));
+        $user = Auth::user();
+        return view('chats.index', compact(['chats', 'user']));
     }
 
     /**
